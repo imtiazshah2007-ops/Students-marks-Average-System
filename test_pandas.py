@@ -1,7 +1,8 @@
 import pandas as pd
 
 read = pd.read_csv('students_scores.csv')
-#Function to get average of specific student
+
+# Function to get average of specific student
 def getStudentAverage(read, student_name):
 
     student_data = read[read['Student_Name'] == student_name]
@@ -20,6 +21,24 @@ def getStudentAverage(read, student_name):
     return average
 
 
+def grade(average):
+    if average >= 90:
+        print('Grade A')
+        print('-----------------------------------------------------------------')
+    elif average >= 80:
+        print('Grade B')
+        print('-----------------------------------------------------------------')
+    elif average >= 70:
+        print('Grade C')
+        print('-----------------------------------------------------------------')
+    elif average >= 60:
+        print('Grade D')
+        print('-----------------------------------------------------------------')
+    else:
+        print('Grade F')
+        print('-----------------------------------------------------------------')
+
+
 req = int(input(
 "Enter 0 to get all student average\n"
 "Enter 1 to get highest average\n"
@@ -29,38 +48,44 @@ req = int(input(
 
 
 if req == 0:
-#Loop is used to execute this code for every name
     for name in read['Student_Name']:
-        getStudentAverage(read, name)
+        average = getStudentAverage(read, name)
+        if average is not None:
+            grade(average)
 
 
 elif req == 1:
-#this is used to allocate higgest average
     read['Average'] = read[['Math','Science','English']].mean(axis=1)
-
     topper = read.loc[read['Average'].idxmax()]
-
+    
     print("Student with Highest Average:")
     print(topper[['Student_Name','Average']])
+    
+    topper_average = float(topper['Average'])
+    grade(topper_average)
 
 
 elif req == 2:
-
     for name in read['Student_Name']:
-        getStudentAverage(read, name)
+        average = getStudentAverage(read, name)
+        if average is not None:
+            grade(average)
 
     read['Average'] = read[['Math','Science','English']].mean(axis=1)
-
     topper = read.loc[read['Average'].idxmax()]
 
-    print("Student with Highest Average:")
+    print("\nStudent with Highest Average:")
     print(topper[['Student_Name','Average']])
+    
+    topper_average = float(topper['Average'])
+    grade(topper_average)
 
 
 elif req == 3:
-
-    inp = str(input("Enter student name: "))
-    getStudentAverage(read, inp)
+    inp = input("Enter student name: ")
+    average = getStudentAverage(read, inp)
+    if average is not None:
+        grade(average)
 
 
 else:
